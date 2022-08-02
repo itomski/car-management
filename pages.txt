@@ -1,0 +1,12 @@
+
+URL		METHODE		Beschreibung
+/		GET		Startseite
+/cars		GET		Übersicht der Fahrzeuge
+/cars/id/123	GET		Details zu einem bestimmten Fahrzeug
+/services	GET		Beschreibung der Services
+/we		GET		Informationen über das Unternehmen
+/contact	GET		Möglichkeit der Kontaktaufnahme
+/admin		GET		Admin-Bereich
+
+
+API
