@@ -4,6 +4,6 @@
 @endsection
 
 @section('main')
-    <h2>Sreiben Sie uns</h2>
+    <h2>Schreiben Sie uns</h2>
     <p>Form...</p>
 @endsection

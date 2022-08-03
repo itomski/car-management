@@ -20,7 +20,25 @@ Route::get('/', function () {
 });
 
 // alle Request-Methoden sind erlaubt
-Route::any('/cars', 'CarController@index');
+// Route::any('/cars', 'CarController@index');
+
+// Alle Methoden werden bereitgestellt und müssen im Controller verfügbar sein
+//Route::resource('/cars', 'CarController')->only(['show', 'create']);
+
+//Route::resource('/cars', 'CarController')->except(['create']);
+
+// Mehrere Resource-Controller auf einen Schlag einbinden
+Route::resources([
+    'cars' => 'CarController',
+    'users' => 'UserController'
+]);
+
+/*
+Route::apiResources([
+    'cars' => 'CarController',
+    'users' => 'UserController'
+]);
+*/
 
 /*
 // id = Pflichtattribut
