@@ -4,9 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class CarController extends Controller
-{
+{   
+    /*
+    private $repo;
+
+    // Constructor Dependency Injection, $repo wird vom IoC-Container automatisch eingeimpft 
+    public function __construct(CarRepository $repo) {
+        $this->repo = $repo;
+    }
+    */
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +30,7 @@ class CarController extends Controller
         $arr = \json_decode($json, true); // JSON wird in ein Array geparst
         // Daten aus der Controller-Methode müssen an das Template weitergegeben werden
         //return view('car-list', ['data' => $arr]); // Template: car-list.blade.php
-        return view('car-list')->withData($arr);
+        return view('car-list', ['data' => $arr]);
     }
 
     /**
@@ -31,7 +41,23 @@ class CarController extends Controller
     public function create()
     {
         // Formular anzeigen
-        return view('car-create');
+        //return view('car-create_'); // Error, weil Template nicht da
+        //return View::make('car-create');
+        //return View::make('car-create', []);
+
+        // if(View::exists('car-create_')) {
+        //     return View::make('car-create_');
+        // }
+        // else {
+        //     return View::make('car-create');
+        // }
+
+        if(view()->exists('car-create_')) {
+            return view('car-create_');
+        }
+        else {
+            return view('car-create');
+        }
     }
 
     /**
@@ -40,6 +66,7 @@ class CarController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // Methoden Dependency Injection,
     public function store(Request $request)
     {
         // Formulardaten werden gespeichert
@@ -111,13 +138,17 @@ class CarController extends Controller
         echo $request->missing('brand').'<br>'; // fehlt es im array?
         */
 
+        // Alte Daten aus data.json einlesen
         $json = Storage::disk('local')->get('data.json');
-        $arr = \json_decode($json, true);
+        $arr = \json_decode($json, true); // json in ein Array parsen
 
+        // Bestimmte Informationen aus dem Request als Array abfragen
         $data = $request->only(['brand', 'status', 'registration', 'description']);
-        $arr[] = $data;
-        //echo \json_encode($list);
+        $arr[] = $data; // das alte Array wird um neue Daten erweitert
+
+        // Neuer Zustand wird in json umgewandelt und gespeichert
         Storage::disk('local')->put('data.json', \json_encode($arr));
+        // Auf Übersicht der Fahrzeuge umleiten
         return redirect()->route('cars.index');
     }
 

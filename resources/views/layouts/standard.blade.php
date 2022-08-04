@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="/css/app.css" rel="stylesheet">
+    @stack('css')
 </head>
 <body>
     <header class="container">
@@ -14,12 +15,12 @@
     
     <nav class="container">
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/cars">Fahrzeuge</a></li>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/we">Über uns</a></li>
-            <li><a href="/contact">Kontakt</a></li>
-            <li><a href="/admin">Admin</a></li>
+            <li><a href="{{ route('home') }}">Home</a></li>
+            <li><a href="{{ route('cars.index') }}">Fahrzeuge</a></li>
+            <li><a href="{{ route('services') }}">Services</a></li>
+            <li><a href="{{ route('we') }}">Über uns</a></li>
+            <li><a href="{{ route('contact') }}">Kontakt</a></li>
+            <li><a href="{{ route('admin') }}">Admin</a></li>
         </ul>
     </nav>
 
@@ -31,6 +32,7 @@
         <h2>Footer</h2>
     </footer>
 
-    <script src="/js/app.js"></script> 
+    <script src="/js/app.js"></script>
+    @stack('script')
 </body>
 </html>

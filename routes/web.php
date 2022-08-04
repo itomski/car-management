@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use Illuminate\Http\Request;
 // nur get Requests erlaubt
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 // alle Request-Methoden sind erlaubt
 // Route::any('/cars', 'CarController@index');
@@ -52,6 +53,7 @@ Route::get('/cars/id/{id?}', function ($id = null) {
 });
 */
 
+/*
 // id = optionales Pflichtattribut mit Defaultwert
 Route::get('/cars/id/{id?}', function ($id = 0) {
     return "Car ID ".$id;
@@ -61,16 +63,21 @@ Route::get('/cars/id/{id?}', function ($id = 0) {
 Route::match(['get', 'post'], '/services', function () {
     return "Services";
 });
+*/
+
+Route::get('/services', function () {
+    return "Services";
+})->name('services');
 
 /*
 Route::get('/services/{type}', function ($type) {
     return "Services: ".$type;
 })->where('type', '[A-Za-zö]+');
-*/
 
 Route::get('/services/{type}', function ($type) {
     return "Services: ".$type;
 })->where('type', 'seo|sea|sem'); // or
++/
 
 /*
 // mit Dependency Injection
@@ -86,11 +93,10 @@ Route::get('/we', function () {
 */
 
 // Oder kurz
-Route::view('/we', 'we');
+Route::view('/we', 'we')->name('we');
 
-// Route::redirect('/about', '/we', 301);
-Route::permanentRedirect('/about', '/we');
-
+Route::redirect('/about', '/we', Response::HTTP_MOVED_PERMANENTLY);
+//Route::permanentRedirect('/about', '/we');
 
 /*
 // Facade
@@ -104,10 +110,22 @@ Route::get('/we', function () {
 });
 */
 
-Route::get('/contact', function () {
-    return view('contact');
-});
+Route::match(['get', 'post'], '/contact', 'ContactController')->name('contact');
 
 Route::get('/admin', function () {
-    return view('admin');
-});
+    $arr = ['firstname' => 'Hans', 'lastname' => 'Parker'];
+
+    $t1 = 'New York';
+    $t2 = 'Boston';
+
+    return view('admin')
+        ->with($arr)
+        ->with('nickname', 'Spiderman')
+        ->withFeature('Spinnennetz')
+        ->with(compact('t1', 't2'))
+        ->with('tools', null)
+        ->with('numbers', [1,3,4,7,9])
+        ->with('zahl', 100)
+        ->with('error', true);
+        //->with('town', compact('t1', 't2'));
+})->name('admin');

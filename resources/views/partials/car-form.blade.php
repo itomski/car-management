@@ -1,4 +1,4 @@
-<form method="post" action="/cars?x=10&y=20&z=true">
+<form method="post" action="{{ route('cars.store') }}">
 
     @csrf
 
@@ -16,6 +16,13 @@
         <label for="description" class="form-label">Beschreibung</label>
         <textarea type="text" class="form-control" name="description" id="description"></textarea>
     </div>
+
+    {{--
+    <div class="mb-3">
+        <label for="email" class="form-label">E-Mail</label>
+        <input type="email" class="form-control" name="email" id="email">
+    </div>
+    --}}
 
     <div class="mb-3">
         <label for="status" class="form-label">Status</label>
