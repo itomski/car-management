@@ -19,7 +19,8 @@ class CarController extends Controller
         $json = Storage::disk('local')->get('data.json');
         $arr = \json_decode($json, true); // JSON wird in ein Array geparst
         // Daten aus der Controller-Methode müssen an das Template weitergegeben werden
-        return view('car-list', ['data' => $arr]); // Template: car-list.blade.php
+        //return view('car-list', ['data' => $arr]); // Template: car-list.blade.php
+        return view('car-list')->withData($arr);
     }
 
     /**
