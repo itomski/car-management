@@ -143,7 +143,7 @@ class CarController extends Controller
         $arr = \json_decode($json, true); // json in ein Array parsen
 
         // Bestimmte Informationen aus dem Request als Array abfragen
-        $data = $request->only(['brand', 'status', 'registration', 'description']);
+        $data = $request->only(['brand', 'status', 'registration', 'description', 'category', 'img']);
         $arr[] = $data; // das alte Array wird um neue Daten erweitert
 
         // Neuer Zustand wird in json umgewandelt und gespeichert

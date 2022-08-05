@@ -14,21 +14,28 @@
 
     <div class="mb-3">
         <label for="description" class="form-label">Beschreibung</label>
-        <textarea type="text" class="form-control" name="description" id="description"></textarea>
+        <textarea class="form-control" name="description" id="description"></textarea>
     </div>
 
-    {{--
     <div class="mb-3">
-        <label for="email" class="form-label">E-Mail</label>
-        <input type="email" class="form-control" name="email" id="email">
+        <label for="category" class="form-label">Klasse</label>
+        <select name="category" class="form-control" id="category">
+            <option>Kleinwagen</option>
+            <option>Mittelklasse</option>
+            <option>Oberklasse</option>
+        </select>
     </div>
-    --}}
+
+    <div class="mb-3">
+        <label for="img" class="form-label">Bild</label>
+        <input type="text" class="form-control" name="img" id="img">
+    </div>
 
     <div class="mb-3">
         <label for="status" class="form-label">Status</label>
         <select name="status" class="form-control" id="status">
-            <option value="A">ACTIVE</option>
-            <option value="B">BLOCKED</option>
+            <option value="active">ACTIVE</option>
+            <option value="blocked">BLOCKED</option>
         </select>
     </div>
 

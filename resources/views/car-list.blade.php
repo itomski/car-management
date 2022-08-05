@@ -18,6 +18,8 @@
                     <th>Status</th>
                     <th>Kennzeichen</th>
                     <th>Beschreibung</th>
+                    <th>Klasse</th>
+                    <th>Bild</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +29,8 @@
                     <td>{{ $car['status'] }}</td>
                     <td>{{ $car['registration'] }}</td>
                     <td>{{ $car['description'] }}</td>
+                    <td>{{ $car['category'] }}</td>
+                    <td><img src="/img/{{ $car['img'] }}" width="100"></td>
                 </tr>
             @endforeach
             </tbody>
