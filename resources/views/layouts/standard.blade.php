@@ -7,6 +7,9 @@
     <title>Document</title>
     <link href="/css/app.css" rel="stylesheet">
     @stack('css')
+    <style>
+        @stack('doc_css')
+    </style>
 </head>
 <body>
     <header class="container">
