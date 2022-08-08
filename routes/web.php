@@ -17,7 +17,7 @@ use Illuminate\Http\Response;
 
 // nur get Requests erlaubt
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome')->withPage('home');
 })->name('home');
 
 // alle Request-Methoden sind erlaubt
@@ -66,8 +66,9 @@ Route::match(['get', 'post'], '/services', function () {
 */
 
 Route::get('/services', function () {
-    return "Services";
-})->name('services');
+    return view('services')->withPage('services');
+})
+->name('services');
 
 /*
 Route::get('/services/{type}', function ($type) {
@@ -93,7 +94,8 @@ Route::get('/we', function () {
 */
 
 // Oder kurz
-Route::view('/we', 'we')->name('we');
+Route::view('/we', 'we', ['page' => 'we'])
+    ->name('we');
 
 Route::redirect('/about', '/we', Response::HTTP_MOVED_PERMANENTLY);
 //Route::permanentRedirect('/about', '/we');
@@ -110,7 +112,8 @@ Route::get('/we', function () {
 });
 */
 
-Route::match(['get', 'post'], '/contact', 'ContactController')->name('contact');
+Route::get('/contact', 'ContactController@form')->name('contact');
+Route::post('/contact', 'ContactController@submit');
 
 Route::get('/admin', function () {
     $arr = ['firstname' => 'Hans', 'lastname' => 'Parker'];
@@ -119,6 +122,7 @@ Route::get('/admin', function () {
     $t2 = 'Boston';
 
     return view('admin')
+        ->withPage('admin')
         ->with($arr)
         ->with('nickname', 'Spiderman')
         ->withFeature('Spinnennetz')

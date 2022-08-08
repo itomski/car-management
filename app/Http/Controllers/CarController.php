@@ -30,7 +30,9 @@ class CarController extends Controller
         $arr = \json_decode($json, true); // JSON wird in ein Array geparst
         // Daten aus der Controller-Methode müssen an das Template weitergegeben werden
         //return view('car-list', ['data' => $arr]); // Template: car-list.blade.php
-        return view('car-list', ['data' => $arr]);
+        return view('car-list')
+                    ->with(['data' => $arr])
+                    ->withPage('cars');
     }
 
     /**
@@ -56,7 +58,7 @@ class CarController extends Controller
             return view('car-create_');
         }
         else {
-            return view('car-create');
+            return view('car-create')->withPage('cars');
         }
     }
 

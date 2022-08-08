@@ -17,13 +17,25 @@
     </header>
     
     <nav class="container">
-        <ul>
-            <li><a href="{{ route('home') }}">Home</a></li>
-            <li><a href="{{ route('cars.index') }}">Fahrzeuge</a></li>
-            <li><a href="{{ route('services') }}">Services</a></li>
-            <li><a href="{{ route('we') }}">Über uns</a></li>
-            <li><a href="{{ route('contact') }}">Kontakt</a></li>
-            <li><a href="{{ route('admin') }}">Admin</a></li>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link {{ $page == 'home' ? 'active' : ''}}" href="{{ route('home') }}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $page == 'cars' ? 'active' : ''}}" href="{{ route('cars.index') }}">Fahrzeuge</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $page == 'services' ? 'active' : ''}}" href="{{ route('services') }}">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $page == 'we' ? 'active' : ''}}" href="{{ route('we') }}">Über uns</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $page == 'contact' ? 'active' : ''}}" href="{{ route('contact') }}">Kontakt</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $page == 'admin' ? 'active' : ''}}" href="{{ route('admin') }}">Admin</a>
+            </li>
         </ul>
     </nav>
 

@@ -6,20 +6,31 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function __invoke(Request $request)
+    public function form()
     {
-        if($request->isMethod('post')) {
-            // Wenn Formular abgeschickt wird
+        return view('contactForm')
+            ->withPage('contact')
+            ->withErrorArr([]);
+    }
+
+    public function submit(Request $request)
+    {
+        $errors = [];
+
+        if(empty($request->email)) { // TODO: richtige Validierung einbauen
+            $errors[] = 'email';
         }
-        else {
-            // Wenn per get aufgerufen wird
-            return view('contact');
+
+        if(empty($request->msg)) {
+            $errors[] = 'msg';
         }
+
+        if(count($errors) > 0) {
+            return view('contactForm')
+                    ->withPage('contact')
+                    ->withErrorArr($errors);
+        }
+
+        return view('contact')->withPage('contact');
     }
 }
