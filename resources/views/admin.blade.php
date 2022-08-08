@@ -4,6 +4,17 @@
 @endsection
 
 @section('main')
+
+    <div class="row">
+        <div class="col">
+        
+            <p><a href="{{ route('cars.create') }}" class="btn btn-success">Neues Fahrzeug</a></p>
+        
+        </div>
+    </div>
+
+
+    {{--
     <h2>Playground</h2>
 
     <p>Vorname: {!! $firstname !!}</p>
@@ -29,7 +40,7 @@
         <p>Du hast mehr als 0 aber weniger als 5 Zahlen</p>
     @endif
 
-    @isset($tools) {{-- var muss definiert und != null sein --}}
+    @isset($tools) 
         <p>{{ $tools->name() }}</p>
     @endisset
 
@@ -97,8 +108,7 @@
     </ul>
 
     @includeWhen($error, 'partials.subadmin', ['msg' => 'Ein ganz großer Fehler!'])
-
-    {{-- 
+    
     // Wenn $error false ist
     @includeUnless($error, 'partials.subadmin', ['msg' => 'Ein ganz großer Fehler!'])
 

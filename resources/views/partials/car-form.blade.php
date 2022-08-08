@@ -23,6 +23,7 @@
             <option>Kleinwagen</option>
             <option>Mittelklasse</option>
             <option>Oberklasse</option>
+            <option>VIP-Car</option>
         </select>
     </div>
 

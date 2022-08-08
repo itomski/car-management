@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 
 class CarController extends Controller
 {   
@@ -25,13 +26,18 @@ class CarController extends Controller
     public function index()
     {
         // Anzeigen "aller" Daten
-
+        /*
         $json = Storage::disk('local')->get('data.json');
-        $arr = \json_decode($json, true); // JSON wird in ein Array geparst
+        $data = \json_decode($json, true); // JSON wird in ein Array geparst
+        */
         // Daten aus der Controller-Methode müssen an das Template weitergegeben werden
         //return view('car-list', ['data' => $arr]); // Template: car-list.blade.php
+
+        $data = DB::select(DB::RAW('SELECT * FROM vehicles'));
+        //dd($data);
+
         return view('car-list')
-                    ->with(['data' => $arr])
+                    ->with(['data' => $data])
                     ->withPage('cars');
     }
 
@@ -140,17 +146,41 @@ class CarController extends Controller
         echo $request->missing('brand').'<br>'; // fehlt es im array?
         */
 
+        /*
         // Alte Daten aus data.json einlesen
         $json = Storage::disk('local')->get('data.json');
         $arr = \json_decode($json, true); // json in ein Array parsen
 
         // Bestimmte Informationen aus dem Request als Array abfragen
         $data = $request->only(['brand', 'status', 'registration', 'description', 'category', 'img']);
-        $arr[] = $data; // das alte Array wird um neue Daten erweitert
+        $arr[strtolower($request->category)][] = $data; // das alte Array wird um neue Daten erweitert
+
+        //dd($arr);
 
         // Neuer Zustand wird in json umgewandelt und gespeichert
         Storage::disk('local')->put('data.json', \json_encode($arr));
         // Auf Übersicht der Fahrzeuge umleiten
+        */
+
+        // Raw Query
+        //DB::insert('INSERT INTO vehicles (id, brand, registration, description, category, img, status)
+        //                VALUES(null, ?, ?, ?, ?, ?, ?)', ['Ford', 'HH-AB123', 'Bla...', 'Kleinwagen', 'ford-fiesta.jpg', 'active']);
+
+        /*
+        DB::insert('INSERT INTO vehicles (id, brand, registration, description, category, img, status)
+            VALUES(null, ?, ?, ?, ?, ?, ?)', [
+                $request->brand, 
+                $request->registration,
+                $request->description, 
+                $request->category,
+                $request->img,
+                $request->status]);
+        */
+
+        $data = $request->only(['brand', 'status', 'registration', 'description', 'category', 'img']);        
+        DB::insert('INSERT INTO vehicles (id, brand, registration, description, category, img, status)
+            VALUES(null, :brand, :registration, :description, :category, :img, :status)', $data);
+        
         return redirect()->route('cars.index');
     }
 
