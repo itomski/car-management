@@ -133,3 +133,5 @@ Route::get('/admin', function () {
         ->with('error', true);
         //->with('town', compact('t1', 't2'));
 })->name('admin');
+
+Route::resource('samples', 'SampleController');
