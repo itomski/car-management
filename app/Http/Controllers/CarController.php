@@ -25,6 +25,10 @@ class CarController extends Controller
      */
     public function index()
     {
+        $t = new \App\Thing();
+        dd($t);
+
+
         // Anzeigen "aller" Daten
         /*
         $json = Storage::disk('local')->get('data.json');
@@ -177,7 +181,7 @@ class CarController extends Controller
                 $request->status]);
         */
 
-        $data = $request->only(['brand', 'status', 'registration', 'description', 'category', 'img']);        
+        $data = $request->only(['brand', 'status', 'registration', 'description', 'category', 'img']);
         DB::insert('INSERT INTO vehicles (id, brand, registration, description, category, img, status)
             VALUES(null, :brand, :registration, :description, :category, :img, :status)', $data);
         

@@ -22,7 +22,7 @@
                 <a class="nav-link {{ $page == 'home' ? 'active' : ''}}" href="{{ route('home') }}">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $page == 'cars' ? 'active' : ''}}" href="{{ route('cars.index') }}">Fahrzeuge</a>
+                <a class="nav-link {{ $page == 'cars' ? 'active' : ''}}" href="{{ route('vehicles.index') }}">Fahrzeuge</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ $page == 'services' ? 'active' : ''}}" href="{{ route('services') }}">Services</a>
@@ -39,11 +39,11 @@
         </ul>
     </nav>
 
-    <main class="container">
+    <main class="container pb-3" style="min-height: 500px">
         @yield('main')
     </main>
 
-    <footer class="container">
+    <footer class="container pt-3">
         <h2>Footer</h2>
     </footer>
 
