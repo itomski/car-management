@@ -29,16 +29,23 @@
                     <td>{{ $v->type }}</td>
                     <td>{{ $v->status }}</td>
                     <td>{{ $v->registration }}</td>
-                    <td>{{ $v->description }}</td>
                     <td>{{ $v->category }}</td>
                     <td><img src="/img/{{ $v->img }}" width="100"></td>
                     <td>
-                        <a href="{{ route('vehicles.edit', ['vehicle' => $v->id]) }}" class="btn btn-warning">Bearbeiten</a>
+                        <a href="{{ route('vehicles.show', ['vehicle' => $v->id]) }}" class="btn btn-success">
+                            <i class="fa fa-eye" aria-hidden="true" title="Details"></i>
+                        </a>
+
+                        <a href="{{ route('vehicles.edit', ['vehicle' => $v->id]) }}" class="btn btn-warning">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" title="Bearbeiten"></i>
+                        </a>
                         
                         <form method="post" action="{{ route('vehicles.destroy', ['vehicle' => $v->id]) }}">
                             @method('DELETE')
                             @csrf
-                            <button type="submit" class="btn btn-danger">Löschen</a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa fa-trash-o" aria-hidden="true" title="Löschen"></i>
+                            </a>
                         </form>
                     </td>
                 </tr>

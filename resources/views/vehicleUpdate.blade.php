@@ -11,7 +11,7 @@
 @section('main')
     <div class="row">
         <div class="col-md-6">
-            @include('partials.vehicleForm', ['new' => false])
+            @include('partials.vehicleForm', ['edit' => true])
         </div>
     </div>    
 @endsection

@@ -14,45 +14,6 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        
-        
-        
-        
-        // $vehicle = new Vehicle();
-        // $vehicle->brand = 'Fiat';
-        // $vehicle->type = 'Panda';
-        // $vehicle->registration = 'HH-AB123';
-        // $vehicle->description = 'Dies und das';
-        // $vehicle->category = 'Kleinwagen';
-        // $vehicle->img = 'test.jpg';
-        // $vehicle->status = 'active';
-        // $vehicle->save();
-
-        // Mass Assignment
-        // Objekt wird in der DB gespeichert
-        // Vehicle::create([
-        //     'brand' => 'Fiat',
-        //     'type' => 'Panda',
-        //     'registration' => 'HH-AB125',
-        //     'description' => 'Dies und das',
-        //     'category' => 'Kleinwagen',
-        //     'img' => 'test.jpg',
-        //     'status' => 'active',
-        // ]);
-
-        // Update
-        // $vehicle = Vehicle::find(38);
-        // //$vehicle = new Vehicle();
-        // $vehicle->brand = 'VW';
-        // $vehicle->save();
-        //dump($vehicle);
-
-        //$vehicles = Vehicle::all(); // Alle Datensätze abfragen
-        // $vehicles = Vehicle::where('status', 'active')
-        //                         ->where('category', 'Oberklasse')
-        //                         ->get();
-        // dump($vehicles);
-        
         $vehicles = Vehicle::all();
         return view('vehicleList')
             ->withVehicles($vehicles)
@@ -91,7 +52,9 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        return "SHOW";
+        return view('vehicleDetails')
+            ->withVehicle($vehicle)
+            ->withPage('cars');
     }
 
     /**

@@ -1,11 +1,11 @@
 
-@if($new)
-    <form method="post" action="{{ route('vehicles.store') }}">
-@else
+@if($edit)
     <form method="post" action="{{ route('vehicles.update', $vehicle->id) }}">
+    @method('PUT')
+@else
+    <form method="post" action="{{ route('vehicles.store') }}">
 @endif
 
-    @method('PUT')
     @csrf
 
     <div class="mb-3">

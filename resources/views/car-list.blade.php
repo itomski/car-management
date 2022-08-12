@@ -11,9 +11,6 @@
     @empty($data)
         <p>Derzeit keine Fahrzeuge verfügbar.</p>
     @else
-        {{-- @foreach($data as $key => $category) --}}
-            {{-- @dump($key) --}}
-            
             <table class="table">
                 <thead>
                     <tr>
@@ -26,7 +23,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                {{-- @foreach ($category as $car) --}}
                 @foreach ($data as $car)
                     <tr>
                         <td>{{ $car->brand }}</td>
@@ -39,6 +35,5 @@
                 @endforeach
                 </tbody>
             </table>
-        {{-- @endforeach --}}
     @endempty
 @endsection

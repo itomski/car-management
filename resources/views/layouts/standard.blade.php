@@ -12,10 +12,6 @@
     </style>
 </head>
 <body>
-    <header class="container">
-        @yield('header')
-    </header>
-    
     <nav class="container">
         <ul class="nav nav-pills">
             <li class="nav-item">
@@ -39,11 +35,15 @@
         </ul>
     </nav>
 
-    <main class="container pb-3" style="min-height: 500px">
+    <header class="container py-3 ">
+        @yield('header')
+    </header>
+
+    <main class="container py-3" style="min-height: 500px">
         @yield('main')
     </main>
 
-    <footer class="container pt-3">
+    <footer class="container py-3">
         <h2>Footer</h2>
     </footer>
 
