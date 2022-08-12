@@ -14,7 +14,15 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = Vehicle::all();
+        //$vehicles = Vehicle::all();
+        // $vehicles = Vehicle::active()->ofBrand('Ford')
+        //                     ->orderBy('id', 'desc')
+        //                     ->take(3)
+        //                     ->get();
+
+        // $vehicles = DB::table('vehicles')->paginate(10);
+        $vehicles = Vehicle::paginate(10);
+        
         return view('vehicleList')
             ->withVehicles($vehicles)
             ->withPage('cars');
@@ -29,6 +37,7 @@ class VehicleController extends Controller
     {
         return view('vehicleCreate')
             ->withVehicle(new Vehicle())
+            ->withCategories(\App\Category::all())
             ->withPage('cars');
     }
 
@@ -67,6 +76,7 @@ class VehicleController extends Controller
     {
         return view('vehicleUpdate')
             ->withVehicle($vehicle)
+            ->withCategories(\App\Category::all())
             ->withPage('cars');
     }
 
@@ -79,7 +89,10 @@ class VehicleController extends Controller
      */
     public function update(Request $request, Vehicle $vehicle)
     {
-        $vehicle->fill($request->all())->save();
+        $category = \App\Category::find($request->category_id);
+        $vehicle->fill($request->all());
+        $vehicle->category()->associate($category);
+        $vehicle->save();
         return redirect()->route('vehicles.index');
     }
 

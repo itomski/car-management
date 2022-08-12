@@ -29,12 +29,11 @@
     </div>
 
     <div class="mb-3">
-        <label for="category" class="form-label">Klasse</label>
-        <select name="category" class="form-control" id="category">
-            <option {{ $vehicle->category == 'Kleinwagen' ? 'selected' : '' }}>Kleinwagen</option>
-            <option {{ $vehicle->category == 'Mittelklasse' ? 'selected' : '' }}>Mittelklasse</option>
-            <option {{ $vehicle->category == 'Oberklasse' ? 'selected' : '' }}>Oberklasse</option>
-            <option {{ $vehicle->category == 'VIP-Car' ? 'selected' : '' }}>VIP-Car</option>
+        <label for="category_id" class="form-label">Klasse</label>
+        <select name="category_id" class="form-control" id="category_id">
+            @foreach ($categories as $category)
+                <option {{ $vehicle->category && $vehicle->category->id == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
         </select>
     </div>
 

@@ -16,7 +16,6 @@
                     <th>Typ</th>
                     <th>Status</th>
                     <th>Kennzeichen</th>
-                    <th>Beschreibung</th>
                     <th>Klasse</th>
                     <th>Bild</th>
                     <th>&nbsp;</th>
@@ -29,8 +28,8 @@
                     <td>{{ $v->type }}</td>
                     <td>{{ $v->status }}</td>
                     <td>{{ $v->registration }}</td>
-                    <td>{{ $v->category }}</td>
-                    <td><img src="/img/{{ $v->img }}" width="100"></td>
+                    <td>{{ $v->category->name ?? 'Nicht gesetz' }}</td>
+                    <td><img src="/img/{{ $v->img }}" width="100" alt="{{ $v->brand.' '.$v->type }}"></td>
                     <td>
                         <a href="{{ route('vehicles.show', ['vehicle' => $v->id]) }}" class="btn btn-success">
                             <i class="fa fa-eye" aria-hidden="true" title="Details"></i>
@@ -52,5 +51,10 @@
             @endforeach
             </tbody>
         </table>
+
+        <div class="row justify-content-center">
+            <div class="col-5">{{ $vehicles->links() }}</div>
+        </div>
+
     @endempty
 @endsection
