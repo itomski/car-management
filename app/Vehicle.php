@@ -47,14 +47,14 @@ class Vehicle extends Model
         return $query->where('brand', $brand);
     }
 
-    // Mutator
-    public function setBrandAttribute($brand) {
-        $this->attributes['brand'] = ucfirst(strtolower($brand));
-    }
+    // // Mutator
+    // public function setBrandAttribute($brand) {
+    //     $this->attributes['brand'] = ucfirst(strtolower($brand));
+    // }
 
-    // Accessor
-    public function getBrandAttribute() {
-        return strtoupper($this->attributes['brand']);
-    }
+    // // Accessor
+    // public function getBrandAttribute() {
+    //     return strtoupper($this->attributes['brand']);
+    // }
 
 }

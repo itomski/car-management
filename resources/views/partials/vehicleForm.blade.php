@@ -1,6 +1,13 @@
+@if($errors->any())
+    <div class="alert alert-warning" role="alert">
+        @foreach ($errors->all() as $e)
+            <p>{{ $e }}</p>
+        @endforeach
+    </div>
+@endif
 
 @if($edit)
-    <form method="post" action="{{ route('vehicles.update', $vehicle->id) }}">
+    <form method="post" action="{{ route('vehicles.update', [$vehicle->id]) }}">
     @method('PUT')
 @else
     <form method="post" action="{{ route('vehicles.store') }}">
@@ -10,7 +17,10 @@
 
     <div class="mb-3">
         <label for="brand" class="form-label">Marke</label>
-        <input type="text" class="form-control" name="brand" id="brand" value="{{ $vehicle->brand }}">
+        <input type="text" class="form-control @error('brand')is-invalid @enderror" name="brand" id="brand" value="{{ $vehicle->brand }}" aria-describedby="brandFeedback">
+        @error('brand')
+            <div id="brandFeedback" class="invalid-feedback">{{ $message }}</div>
+        @enderror
     </div>
 
     <div class="mb-3">

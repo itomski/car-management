@@ -14,18 +14,10 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        //$vehicles = Vehicle::all();
-        // $vehicles = Vehicle::active()->ofBrand('Ford')
-        //                     ->orderBy('id', 'desc')
-        //                     ->take(3)
-        //                     ->get();
-
-        // $vehicles = DB::table('vehicles')->paginate(10);
         $vehicles = Vehicle::paginate(10);
         
         return view('vehicleList')
             ->withVehicles($vehicles);
-            //->withPage('cars');
     }
 
     /**
@@ -38,8 +30,6 @@ class VehicleController extends Controller
         return view('vehicleCreate')
             ->withVehicle(new Vehicle())
             ->withCategories(\App\Category::all());
-            //->with('page', 'cars');
-            //->withPage('cars');
     }
 
     /**
@@ -50,6 +40,13 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
+        $validData = $request->validate([
+            'brand' => ['required', 'max:25'],
+            'type' => 'required|max:25',
+            'registration' => 'required|min:6|max:20',
+            'description' => 'required|min:2',
+            'img' => 'required|min:5',
+        ]);
         Vehicle::create($request->all());
         return redirect()->route('vehicles.index');
     }
@@ -90,6 +87,14 @@ class VehicleController extends Controller
      */
     public function update(Request $request, Vehicle $vehicle)
     {
+        $validData = $request->validate([
+            'brand' => ['required', 'max:25'],
+            'type' => 'required|max:25',
+            'registration' => 'required|min:6|max:20',
+            'description' => 'required|min:2',
+            'img' => 'required|min:5',
+        ]);
+
         $category = \App\Category::find($request->category_id);
         $vehicle->fill($request->all());
         $vehicle->category()->associate($category);
