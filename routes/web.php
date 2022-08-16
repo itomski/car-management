@@ -137,3 +137,5 @@ Route::get('/admin', function () {
 Route::resource('samples', 'SampleController');
 
 Route::resource('vehicles', 'VehicleController');
+
+Route::resource('bookings', 'BookingController');

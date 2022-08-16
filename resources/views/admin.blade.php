@@ -8,6 +8,7 @@
     <div class="row">
         <div class="col">
             <p><a href="{{ route('vehicles.create') }}" class="btn btn-success">Neues Fahrzeug</a></p>
+            <p><a href="{{ route('bookings.create') }}" class="btn btn-success">Neue Buchung</a></p>
         </div>
     </div>
 @endsection

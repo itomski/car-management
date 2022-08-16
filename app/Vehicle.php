@@ -18,9 +18,22 @@ class Vehicle extends Model
         'status'
     ];
 
+    // Alle Attribute die als DateObjekt gehandhabt werden sollen
+    // Eingaben werden automatisch in ein Carbon Date umgewandet
+    // protected $dates = [
+    //    'last_check'
+    // ];
+
+    // default DateTime-Format festlegen
+    //protected $dateFormat = 'Y-m-d H:i:s';
+
     // ManyToOne
     public function category() {
         return $this->belongsTo('App\Category');
+    }
+
+    public function bookings() {
+        return $this->hasMany('App\Booking');
     }
 
     // Query Scope
@@ -33,4 +46,15 @@ class Vehicle extends Model
     public function scopeOfBrand($query, $brand) {
         return $query->where('brand', $brand);
     }
+
+    // Mutator
+    public function setBrandAttribute($brand) {
+        $this->attributes['brand'] = ucfirst(strtolower($brand));
+    }
+
+    // Accessor
+    public function getBrandAttribute() {
+        return strtoupper($this->attributes['brand']);
+    }
+
 }

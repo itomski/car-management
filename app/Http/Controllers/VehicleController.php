@@ -24,8 +24,8 @@ class VehicleController extends Controller
         $vehicles = Vehicle::paginate(10);
         
         return view('vehicleList')
-            ->withVehicles($vehicles)
-            ->withPage('cars');
+            ->withVehicles($vehicles);
+            //->withPage('cars');
     }
 
     /**
@@ -37,8 +37,9 @@ class VehicleController extends Controller
     {
         return view('vehicleCreate')
             ->withVehicle(new Vehicle())
-            ->withCategories(\App\Category::all())
-            ->withPage('cars');
+            ->withCategories(\App\Category::all());
+            //->with('page', 'cars');
+            //->withPage('cars');
     }
 
     /**
@@ -62,8 +63,8 @@ class VehicleController extends Controller
     public function show(Vehicle $vehicle)
     {
         return view('vehicleDetails')
-            ->withVehicle($vehicle)
-            ->withPage('cars');
+            ->withVehicle($vehicle);
+            //->withPage('cars');
     }
 
     /**
@@ -76,8 +77,8 @@ class VehicleController extends Controller
     {
         return view('vehicleUpdate')
             ->withVehicle($vehicle)
-            ->withCategories(\App\Category::all())
-            ->withPage('cars');
+            ->withCategories(\App\Category::all());
+            //->withPage('cars');
     }
 
     /**

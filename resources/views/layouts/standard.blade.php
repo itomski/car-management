@@ -15,22 +15,22 @@
     <nav class="container">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link {{ $page == 'home' ? 'active' : ''}}" href="{{ route('home') }}">Home</a>
+                <a class="nav-link {{ Request::segment(1) == 'home' ? 'active' : ''}}" href="{{ route('home') }}">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $page == 'cars' ? 'active' : ''}}" href="{{ route('vehicles.index') }}">Fahrzeuge</a>
+                <a class="nav-link {{ Request::segment(1) == 'vehicles' ? 'active' : ''}}" href="{{ route('vehicles.index') }}">Fahrzeuge</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $page == 'services' ? 'active' : ''}}" href="{{ route('services') }}">Services</a>
+                <a class="nav-link {{ Request::segment(1) == 'services' ? 'active' : ''}}" href="{{ route('services') }}">Services</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $page == 'we' ? 'active' : ''}}" href="{{ route('we') }}">Über uns</a>
+                <a class="nav-link {{ Request::segment(1) == 'we' ? 'active' : ''}}" href="{{ route('we') }}">Über uns</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $page == 'contact' ? 'active' : ''}}" href="{{ route('contact') }}">Kontakt</a>
+                <a class="nav-link {{ Request::segment(1) == 'contact' ? 'active' : ''}}" href="{{ route('contact') }}">Kontakt</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $page == 'admin' ? 'active' : ''}}" href="{{ route('admin') }}">Admin</a>
+                <a class="nav-link {{ Request::segment(1) == 'admin' ? 'active' : ''}}" href="{{ route('admin') }}">Admin</a>
             </li>
         </ul>
     </nav>
