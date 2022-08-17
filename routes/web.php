@@ -139,3 +139,6 @@ Route::resource('samples', 'SampleController');
 Route::resource('vehicles', 'VehicleController');
 
 Route::resource('bookings', 'BookingController');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

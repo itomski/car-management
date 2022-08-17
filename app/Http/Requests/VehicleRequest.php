@@ -13,7 +13,7 @@ class VehicleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,29 @@ class VehicleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'brand' => ['required', 'max:25'],
+            'type' => 'required|max:25',
+            'registration' => 'required|min:6|max:20',
+            'description' => 'required|min:2',
+            'img' => 'required|min:6',
+        ];
+    }
+
+    // Feldnamen für die Fehlerausgabe anpassen
+    public function attributes()
+    {
+        return [
+            'brand' => 'Marke',
+            'img' => 'Bild',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'brand.required' => 'Die :attribute muss eingegeben werden',
+            'brand.max' => 'Die :attribute ist zu lang. Maximale Länge ist :max Zeichen.',
+            'img.required' => 'Ein :attribute muss eingegeben werden',
         ];
     }
 }

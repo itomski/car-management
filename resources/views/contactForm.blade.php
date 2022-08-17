@@ -6,8 +6,6 @@
 
 @section('main')
 
-    @dump(request())
-
     <div class="row">
         <div class="col-sm-8 col-md-6">
             <form action="{{ route('contact') }}" method="post">

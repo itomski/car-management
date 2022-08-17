@@ -8,6 +8,7 @@ class ContactController extends Controller
 {
     public function form()
     {
+        //dd(request()->session()->get('fav', 'Nicht da...'));
         return view('contactForm')
             ->withPage('contact')
             ->withErrorArr([]);

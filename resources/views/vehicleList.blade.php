@@ -5,6 +5,10 @@
 
 @section('main')
     <h2>Fahrzeuge</h2>
+    {{-- 
+    {{ $link }}
+    {!! $link !!}
+    --}}
 
     @empty($vehicles)
         <p>Derzeit keine Fahrzeuge verfügbar.</p>
