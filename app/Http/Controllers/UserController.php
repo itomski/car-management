@@ -14,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        dump(Response::HTTP_FORBIDDEN);
+        $list = \App\User::all();
+        //dd($list);
+        return view('userList', ['users' => $list]);
     }
 
     /**

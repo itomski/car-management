@@ -10,10 +10,6 @@ class Booking extends Model
         'start_at', 'end_at', 'status'
     ];
 
-    // protected $casts = [
-    //     'active' => 'boolean'
-    // ];
-
     protected $dates = [
         'start_at', 'end_at'
     ];
@@ -25,4 +21,9 @@ class Booking extends Model
     public function vehicle() {
         return $this->belongsTo('App\Vehicle');
     }
+
+    // Booking->user_id>User->profile_id>Profile
+    // public function profile() {
+    //     return $this->hasOneThrough('App\Profile', 'App\User');
+    // }
 }

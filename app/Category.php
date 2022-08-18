@@ -11,8 +11,14 @@ class Category extends Model
         'short_name'
     ];
 
-    // OneToMany
+    //protected $with = ['vehicles'];
+
     public function vehicles() {
         return $this->hasMany('App\Vehicle');
+    }
+
+    // Abkürzung für den Weg: Category zu Vehicle zu Booking
+    public function bookings() {
+         return $this->hasManyThrough('App\Booking', 'App\Vehicle');
     }
 }

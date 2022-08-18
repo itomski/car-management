@@ -28,6 +28,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $with = ['profile'];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -37,11 +39,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // OneToOne
+    public function profile() {
+        return $this->hasOne('App\Profile');
+    }
+
+    // OneToMany
     public function bookings() {
         return $this->hasMany('App\Booking');
     }
 
+    // ManyToMany
     public function roles() {
-        return $this->belongsToMany('App\Role', 'role_user');
+        return $this->belongsToMany('App\Role', 'role_user')
+            //->withTimestamps(); // created_at und updated_at
+            ->withPivot('created_at'); // nur eine bestimmte spalte
     }
 }

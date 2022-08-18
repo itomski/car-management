@@ -8,7 +8,9 @@
     {{-- 
     {{ $link }}
     {!! $link !!}
+    {{ $v ?? 'ist null' }}
     --}}
+
 
     @empty($vehicles)
         <p>Derzeit keine Fahrzeuge verfügbar.</p>
@@ -39,17 +41,24 @@
                             <i class="fa fa-eye" aria-hidden="true" title="Details"></i>
                         </a>
 
-                        <a href="{{ route('vehicles.edit', ['vehicle' => $v->id]) }}" class="btn btn-warning">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true" title="Bearbeiten"></i>
-                        </a>
-                        
-                        <form method="post" action="{{ route('vehicles.destroy', ['vehicle' => $v->id]) }}">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fa fa-trash-o" aria-hidden="true" title="Löschen"></i>
+                        {{-- @if(auth()->user()) --}}
+                        @auth
+                            <a href="{{ route('vehicles.edit', ['vehicle' => $v->id]) }}" class="btn btn-warning">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" title="Bearbeiten"></i>
                             </a>
-                        </form>
+                            
+                            <form method="post" action="{{ route('vehicles.destroy', ['vehicle' => $v->id]) }}">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa fa-trash-o" aria-hidden="true" title="Löschen"></i>
+                                </a>
+                            </form>
+                        @endauth
+                        {{-- @endif --}}
+                        @guest
+                            Du!!!!!!
+                        @endguest
                     </td>
                 </tr>
             @endforeach

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Vehicle;
 use App\Http\Requests\VehicleRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+//use Illuminate\Http\Response;
+use Illuminate\Auth\Access\Response;
 
 class VehicleController extends Controller
 {
@@ -33,6 +37,12 @@ class VehicleController extends Controller
 
         $vehicles = Vehicle::paginate(10);
 
+        //$v = Vehicle::find(199);
+        //dump($v);
+        // $v = Vehicle::findOrFail(199);
+        // dd($v);
+
+
         // Cookie schreiben
         //cookie()->queue('besucher_id', '1234', 5);
 
@@ -43,9 +53,20 @@ class VehicleController extends Controller
         // return response(view('vehicleList')->withVehicles($vehicles))
         //         ->withCookie('besucher_id2', '1234', 5);
 
+        // dump(request()->user());
+
+        // if(Auth::check()) {
+        //     dump('angemeldet');
+        //     dump(Auth::user());
+        // }
+        // else {
+        //     dump('nicht angemeldet');
+        // }
+
         return view('vehicleList')
             //->withLink('<a href="#">Link</a>')
             ->withVehicles($vehicles);
+            //->withV($v);
             
     }
 
@@ -56,9 +77,16 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        return view('vehicleCreate')
-            ->withVehicle(new Vehicle())
-            ->withCategories(\App\Category::all());
+        Gate::authorize('isAdmin');
+
+        // if(Gate::allows('isAdmin')) {
+            return view('vehicleCreate')
+                ->withVehicle(new Vehicle())
+                ->withCategories(\App\Category::all());
+        // }
+        // else {
+        //     return Gate::denies(403);
+        // }
     }
 
     /**
@@ -77,6 +105,7 @@ class VehicleController extends Controller
         //     'description' => 'required|min:2',
         //     'img' => 'required|min:5',
         // ]);
+        dump($request->user());
         Vehicle::create($request->all());
         return redirect()->route('vehicles.index');
     }
