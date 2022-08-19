@@ -5,12 +5,6 @@
 
 @section('main')
     <h2>Fahrzeuge</h2>
-    {{-- 
-    {{ $link }}
-    {!! $link !!}
-    {{ $v ?? 'ist null' }}
-    --}}
-
 
     @empty($vehicles)
         <p>Derzeit keine Fahrzeuge verfügbar.</p>
@@ -41,8 +35,7 @@
                             <i class="fa fa-eye" aria-hidden="true" title="Details"></i>
                         </a>
 
-                        {{-- @if(auth()->user()) --}}
-                        @auth
+                        @can('isAdmin')
                             <a href="{{ route('vehicles.edit', ['vehicle' => $v->id]) }}" class="btn btn-warning">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true" title="Bearbeiten"></i>
                             </a>
@@ -54,11 +47,7 @@
                                     <i class="fa fa-trash-o" aria-hidden="true" title="Löschen"></i>
                                 </a>
                             </form>
-                        @endauth
-                        {{-- @endif --}}
-                        @guest
-                            Du!!!!!!
-                        @endguest
+                        @endcan
                     </td>
                 </tr>
             @endforeach

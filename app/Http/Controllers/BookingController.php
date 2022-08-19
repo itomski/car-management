@@ -14,7 +14,14 @@ class BookingController extends Controller
      */
     public function index()
     {
-        return view('bookingList', ['bookings' => \App\Booking::all()]);
+        if(request()->user()->can('isAdmin')) {
+            $bookings = \App\Booking::all();
+        }
+        else {
+            $bookings = request()->user()->bookings;
+        }
+
+        return view('bookingList', ['bookings' => $bookings]);
     }
 
     /**
@@ -37,18 +44,10 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //Statische Methoden werden direkt auf der Klasse ausgeführt
-        // KlassenName::methodenName()
-        // $v = \App\Vehicle::find(1) // In der DB nach einem Fahrzeug mit der ID 1 suchen
-
-        // Instanzmethoden werden auf einer Instanz einer Klasse ausgeführt
-        // Instanz ist ein Objekt das aus einer Klasse erzeugt wurde
-        // $objektName->methodenName()
-        // $v->save(); // Ein bestimmtes Fahrzeug-Objekt speichern
-
-
-        // Sind alle nötigen Eigenschaften fillable dann
-        //$b = new \App\Booking::create($request->all());
+        $request->validate([
+            'start_at' => 'required|date_format:Y-m-d|after_or_equal:today',
+            'end_at' => 'required|date_format:Y-m-d|after_or_equal:start_at',
+        ]);
 
         $b = new \App\Booking();
         $b->fill($request->all());

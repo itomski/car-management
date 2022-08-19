@@ -48,8 +48,8 @@ Route::middleware('can:isAdmin')->group(function() {
 Route::resource('vehicles', 'VehicleController');
 
 Route::group(['middleware' => ['auth']], function() {
-
     Route::resource('bookings', 'BookingController');
+    Route::resource('profile', 'ProfileController')->only(['index', 'store']);
 });
 
 Auth::routes();

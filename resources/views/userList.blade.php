@@ -5,7 +5,7 @@
 
 @section('main')
     <h2>User</h2>
-
+    
     @empty($users)
         <p>Derzeit keine User verfügbar.</p>
     @else

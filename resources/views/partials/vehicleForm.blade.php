@@ -1,10 +1,4 @@
-@if($errors->any())
-    <div class="alert alert-warning" role="alert">
-        @foreach ($errors->all() as $e)
-            <p>{{ $e }}</p>
-        @endforeach
-    </div>
-@endif
+@include('partials.showErrors')
 
 @if($edit)
     <form method="post" action="{{ route('vehicles.update', [$vehicle->id]) }}">
