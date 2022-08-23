@@ -1,10 +1,10 @@
 @include('partials.showErrors')
 
 @if($edit)
-    <form method="post" action="{{ route('vehicles.update', [$vehicle->id]) }}">
+    <form method="post" action="{{ route('vehicles.update', [$vehicle->id]) }}" enctype="multipart/form-data">
     @method('PUT')
 @else
-    <form method="post" action="{{ route('vehicles.store') }}">
+    <form method="post" action="{{ route('vehicles.store') }}" enctype="multipart/form-data">
 @endif
 
     @csrf
@@ -47,7 +47,7 @@
 
     <div class="mb-3">
         <label for="img" class="form-label">Bild</label>
-        <input type="text" class="form-control" name="img" id="img" value="{{ old('img', $vehicle->img) }}">
+        <input type="file" class="form-control-file" name="img" id="img">
     </div>
 
     <div class="mb-3">

@@ -35,9 +35,12 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(1) == 'we' ? 'active' : ''}}" href="{{ route('we') }}">Über uns</a>
                 </li>
+
+                {{-- @can('viewAny', \App\Vehicle::class) --}}
                 <li class="nav-item">
                     <a class="nav-link {{ Request::segment(1) == 'contact' ? 'active' : ''}}" href="{{ route('contact') }}">Kontakt</a>
                 </li>
+                {{-- @endcan --}}
             
                 @guest
                     <li class="nav-item">

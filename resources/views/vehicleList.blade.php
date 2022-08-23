@@ -29,7 +29,7 @@
                     <td>{{ $v->status }}</td>
                     <td>{{ $v->registration }}</td>
                     <td>{{ $v->category->name ?? 'Nicht gesetz' }}</td>
-                    <td><img src="/img/{{ $v->img }}" width="100" alt="{{ $v->brand.' '.$v->type }}"></td>
+                    <td><img src="/storage/{{ $v->img }}" width="100" alt="{{ $v->brand.' '.$v->type }}"></td>
                     <td>
                         <a href="{{ route('vehicles.show', ['vehicle' => $v->id]) }}" class="btn btn-success">
                             <i class="fa fa-eye" aria-hidden="true" title="Details"></i>

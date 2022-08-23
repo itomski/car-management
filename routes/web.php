@@ -47,7 +47,7 @@ Route::middleware('can:isAdmin')->group(function() {
 
 Route::resource('vehicles', 'VehicleController');
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth', 'aDate:true', 'bisDann']], function() {
     Route::resource('bookings', 'BookingController');
     Route::resource('profile', 'ProfileController')->only(['index', 'store']);
 });
@@ -55,3 +55,8 @@ Route::group(['middleware' => ['auth']], function() {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Prüfung der Policy auf der Ebene der Routs
+// Route::get('/contact', 'ContactController@form')
+//      ->middleware('can:viewAny,\App\Vehicle')
+//      ->name('contact');

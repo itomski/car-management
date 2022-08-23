@@ -7,11 +7,23 @@ use App\Http\Requests\VehicleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 //use Illuminate\Http\Response;
-use Illuminate\Auth\Access\Response;
+//use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class VehicleController extends Controller
 {
+    public function __construct() {
+        //$this->middleware('aDate'); // wird nur in diesem Controller verwendet
+        $this->middleware('aDate')->only('index'); // wird nur in diesem Controller für index verwendet
+    }
+
+
+    // public function __construct() {
+    //     $this->authorizeResource(Vehicle::class, 'vehicle');
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +31,15 @@ class VehicleController extends Controller
      */
     public function index()
     {
+        //dd(request());
+
+        // Log::channel('daily')->info('Das ist das Haus von Nikigraus 1');
+        // logger()->error('Das ist das Haus von Nikigraus', ['file' => __FILE__, 'line' => __LINE__, 'method' => __METHOD__]);
+
+
+        // viewAny in VehiclePolicy prüfen
+        //Gate::authorize('viewAny', Vehicle::class);
+
         // Sessions schreiben
         //session()->put('fav', []);
         // request()->session()->push('fav', now()); // für die dauer der session
@@ -77,8 +98,9 @@ class VehicleController extends Controller
      */
     public function create()
     {
+        //dd(request());
         Gate::authorize('isAdmin');
-
+        
         // if(Gate::allows('isAdmin')) {
             return view('vehicleCreate')
                 ->withVehicle(new Vehicle())
@@ -105,8 +127,23 @@ class VehicleController extends Controller
         //     'description' => 'required|min:2',
         //     'img' => 'required|min:5',
         // ]);
-        dump($request->user());
-        Vehicle::create($request->all());
+
+        // save/create wird auf Model-Objekten ausgeführt
+        // store wird auf Illiminate\Http\File-Objekten ausgeführt
+
+        $file = $request->file('img');
+        // Als Name wird ein Hash verwendet
+        $path = $file->store('img', 'public'); // storage/app/public/img
+
+        // $file = $request->file('img');
+        // $fileName = $file->getClientOriginalName(); // Original_namen abfragen
+        // // Originalname wird verwendet
+        // $path = $file->storeAs('img', $fileName, 'public');
+
+        $data = $request->all();
+        $data['img'] = $path;
+
+        Vehicle::create($data);
         return redirect()->route('vehicles.index');
     }
 
@@ -131,6 +168,8 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
+        Log::info('Edit für Fahrzeug: ', ['vehicle_id' => $vehicle->id]);
+
         return view('vehicleUpdate')
             ->withVehicle($vehicle)
             ->withCategories(\App\Category::all());
@@ -161,7 +200,10 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
+        // disk('public') -> storage/app/public + /img/...
+        Storage::disk('public')->delete($vehicle->img);
         $vehicle->delete();
-        return redirect()->route('vehicles.index');
+        //return redirect()->route('vehicles.index');
+        return redirect()->back();
     }
 }

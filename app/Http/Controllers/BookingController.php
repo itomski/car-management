@@ -14,6 +14,8 @@ class BookingController extends Controller
      */
     public function index()
     {
+        dd(request());
+
         if(request()->user()->can('isAdmin')) {
             $bookings = \App\Booking::all();
         }

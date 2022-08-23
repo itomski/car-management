@@ -55,4 +55,15 @@ class User extends Authenticatable
             //->withTimestamps(); // created_at und updated_at
             ->withPivot('created_at'); // nur eine bestimmte spalte
     }
+
+    public function hasRole($roleName) {
+        
+        $roleName = strtolower($roleName);
+
+        foreach($this->roles as $role) {
+            if(strtolower($role->name) === $roleName)
+                return true;
+        }
+        return false;
+    }
 }

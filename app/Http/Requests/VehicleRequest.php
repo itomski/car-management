@@ -28,7 +28,7 @@ class VehicleRequest extends FormRequest
             'type' => 'required|max:25',
             'registration' => 'required|min:6|max:20',
             'description' => 'required|min:2',
-            'img' => 'required|min:6',
+            'img' => 'required|mimes:jpeg,png,gif,jpg|max:2048',
         ];
     }
 
