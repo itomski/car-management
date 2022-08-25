@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('/v1')->group(function() {
+    Route::get('vehicles', 'VehicleApiController@all');
+
+    // GET api/v1/vehicles => alle Vehicles
+    // GET api/v1/vehicles/1 => nur ein Vehicle
+});

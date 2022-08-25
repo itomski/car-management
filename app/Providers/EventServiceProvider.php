@@ -18,6 +18,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        // \App\Events\VehicleActive::class => [
+        //     \App\Listeners\VehicleActiveListener::class,
+        // ]
+    ];
+
+    protected $subscribe = [
+        'App\Listeners\VehicleActionSubscriber'
     ];
 
     /**
@@ -28,7 +35,12 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
+
+    // Scannt automatisch nach Listenern und Events
+    public function shouldDiscoverEvents() {
+        return true;
+    }
+
+    // mit Überschrreiben der disoverEventsWithin() kann man weitere Orte zum Scannen angeben
 }

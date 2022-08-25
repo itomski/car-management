@@ -45,6 +45,8 @@ Route::middleware('can:isAdmin')->group(function() {
     })->name('admin');
 });
 
+Route::get('vehicles/test-api', 'VehicleController@testApi');
+
 Route::resource('vehicles', 'VehicleController');
 
 Route::get('/bookings/newsletter', 'BookingController@newsletter')->name('newsletter');

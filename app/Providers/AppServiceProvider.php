@@ -24,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Observer wird zentral registriert
+        \App\Profile::observe(\App\Observers\ProfileObserver::class);
+
         // Ab Laravel 8
         // Log::sharedContext([
         //     'dataId' => 123,

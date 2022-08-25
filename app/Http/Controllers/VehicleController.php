@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Notification;
+use App\Exceptions\ToLowException;
+use App\Exceptions\ToHighException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Events\VehicleActive;
+use Illuminate\Support\Facades\Http;
 
 class VehicleController extends Controller
 {
@@ -34,12 +39,54 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        //dump(auth()->user()->notifications);
-        dump(auth()->user()->unreadNotifications);
+        // try {
+        //     // Wenn User nicht da, dann wird ModelNotFoundException geworfen
+        //     $user = \App\User::findOrFail(200);
+        //     dump($user->name);
+        // }
+        // catch(ModelNotFoundException $e) {
+        //     dd($e);
+        // }
 
-        foreach(auth()->user()->unreadNotifications as $n) {
-            $n->markAsRead();
-        }
+        // try {
+        //     // try: Gefahrenbereich in dem Exceptions auftauchen können
+
+        //     $zahl = rand(0, 100);
+
+        //     if($zahl < 20) {
+        //         throw new ToLowException('Zu klein: '.$zahl);
+        //     }
+        //     elseif($zahl > 80) {
+        //         throw new ToHighException('Zu groß '.$zahl);
+        //     }
+        //     else {
+        //         dump('Es ist perfekt '.$zahl);
+        //     }
+        // }
+        // catch(ToLowException $e) {
+        //     dump('Problem: '.$e->getMessage());
+        // }
+        // catch(ToHighException $e) {
+        //     dump('Problem: '.$e->getMessage());
+        // }
+        // finally {
+        //     // wenn vorhanden, wird es immer ausgeführt
+        //     dump('Das wird anschließend erledigt...');
+        // }
+
+        // dd('ENDE');
+
+        //$user = \App\User::find(200);
+        //$user = \App\User::findOrFail(200);
+        //dump($user->name);
+
+
+        //dump(auth()->user()->notifications); // Zeigt alle 
+        // dump(auth()->user()->unreadNotifications); // Zeigt nur die Nicht-gelesenen
+
+        // foreach(auth()->user()->unreadNotifications as $n) {
+        //     $n->markAsRead();
+        // }
 
         $vehicles = Vehicle::paginate(10);
         return view('vehicleList')
@@ -152,6 +199,11 @@ class VehicleController extends Controller
         $vehicle->category()->associate($category);
         $vehicle->save();
 
+        if($vehicle->status === 'active') {
+            event(new VehicleActive($vehicle));
+            //VehicleActive::dispatch($vehicle);
+        }
+
         auth()->user()->notify(new VehicleStatusChange($vehicle));
         //Notification::send(auth()->user, new VehicleStatusChange());
 
@@ -179,5 +231,26 @@ class VehicleController extends Controller
         $vehicle->delete();
         //return redirect()->route('vehicles.index');
         return redirect()->back();
+    }
+
+    public function testApi()
+    {
+        // $resp = Http::get('https://randomuser.me/api/')['results'][0]['gender'];
+        // dd($resp);
+
+        // Parameter mit der Anfrage senden (im EntityBody)
+        $resp = Http::post('https://jsonplaceholder.typicode.com/users', [
+            'name' => 'Peter'
+        ]);
+
+        dd($resp->body());
+
+        // Parameter mit der Anfrage senden (per RequestLine)
+        // https://jsonplaceholder.typicode.com/users?name=Peter
+        $resp = Http::get('https://jsonplaceholder.typicode.com/users', [
+            'name' => 'Peter'
+        ]);
+
+        dd($resp->body());
     }
 }
