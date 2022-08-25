@@ -47,6 +47,8 @@ Route::middleware('can:isAdmin')->group(function() {
 
 Route::resource('vehicles', 'VehicleController');
 
+Route::get('/bookings/newsletter', 'BookingController@newsletter')->name('newsletter');
+
 Route::group(['middleware' => ['auth', 'aDate:true', 'bisDann']], function() {
     Route::resource('bookings', 'BookingController');
     Route::resource('profile', 'ProfileController')->only(['index', 'store']);
@@ -60,3 +62,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/contact', 'ContactController@form')
 //      ->middleware('can:viewAny,\App\Vehicle')
 //      ->name('contact');
+
+Route::get('/paypal/test', 'PayPalController@index');
+Route::get('/paypal/checkout', 'PayPalController@checkout')->name('paypal.checkout');
+Route::get('/paypal/checkout-success', 'PayPalController@checkoutSuccess');
+Route::post('/paypal/notify', 'PayPalController@notify');

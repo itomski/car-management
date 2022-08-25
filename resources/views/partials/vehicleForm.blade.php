@@ -9,6 +9,8 @@
 
     @csrf
 
+    <input type="hidden" name="redirectTo" value="{{ URL::previous() }}">
+
     <div class="mb-3">
         <label for="brand" class="form-label">Marke</label>
         <input type="text" class="form-control @error('brand')is-invalid @enderror" name="brand" id="brand" value="{{ old('brand', $vehicle->brand) }}" aria-describedby="brandFeedback">

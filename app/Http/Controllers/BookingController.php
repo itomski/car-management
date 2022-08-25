@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
+use App\Mail\BookingCreated;
+use App\Mail\Newsletter;
+use App\Mail\NextNewsletter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -14,8 +18,6 @@ class BookingController extends Controller
      */
     public function index()
     {
-        dd(request());
-
         if(request()->user()->can('isAdmin')) {
             $bookings = \App\Booking::all();
         }
@@ -53,9 +55,21 @@ class BookingController extends Controller
 
         $b = new \App\Booking();
         $b->fill($request->all());
-        $b->user()->associate(\App\User::find($request->user));
+        $user = \App\User::find($request->user);
+        $b->user()->associate($user);
         $b->vehicle()->associate(\App\Vehicle::find($request->vehicle));
         $b->save();
+
+        $admin = \App\User::find(1);
+
+        // Mail::to($user)
+        //     ->cc($admin)
+        //     //->bcc($admin)
+        //     ->send(new BookingCreated($b));
+
+        // mit markdown
+        Mail::to($user)
+            ->send(new NextNewsletter("Das ist die Nachricht..."));    
 
         return redirect()->route('bookings.index');
     }
@@ -104,5 +118,23 @@ class BookingController extends Controller
     {
         $booking->delete();
         return redirect()->route('bookings.index');
+    }
+
+    public function newsletter()
+    {
+        $users = \App\User::all();
+
+        foreach($users as $user) {
+            // Mail::to($user)->send(new Newsletter('Das ist eine Nachricht für alle'));
+            
+            // Versand im Hintergrund
+            // Mail::to($user)->queue(new Newsletter('Das ist eine Nachricht für alle'));
+            
+            // Versand im Hintergrund mit 20 Sek Verzögerung
+            Mail::to($user)
+                ->later(now()->addSeconds(60), new Newsletter('Das ist eine Nachricht für alle'));
+        }
+
+        return 'Newsletter verschickt';
     }
 }

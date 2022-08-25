@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Vehicle;
 use App\Http\Requests\VehicleRequest;
+use App\Notifications\VehicleStatusChange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 //use Illuminate\Http\Response;
 //use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Notification;
 
 class VehicleController extends Controller
 {
@@ -31,63 +34,16 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        //dd(request());
+        //dump(auth()->user()->notifications);
+        dump(auth()->user()->unreadNotifications);
 
-        // Log::channel('daily')->info('Das ist das Haus von Nikigraus 1');
-        // logger()->error('Das ist das Haus von Nikigraus', ['file' => __FILE__, 'line' => __LINE__, 'method' => __METHOD__]);
-
-
-        // viewAny in VehiclePolicy prüfen
-        //Gate::authorize('viewAny', Vehicle::class);
-
-        // Sessions schreiben
-        //session()->put('fav', []);
-        // request()->session()->push('fav', now()); // für die dauer der session
-        // request()->session()->flush('xyz', 'Wert'); // nur für die Dauer des Requests
-        // request()->session()->reflash(); // alle flash Werte werden um ein Request verlängert
-        // request()->session()->keep('xyz'); // nur xyz wird ein Request verlängert
-        // request()->session()->forget('xyz'); // Werte aus der Session löschen
-        
-        // Sessions lesen
-        //dd(request()->session()->get('fav', 'Nicht da...'));
-        //dd(request()->session()->all());
-        //dd(session()->all());
-
-        // request()->session()->regenerate(); // SessionID neu generieren
-        // session()->invalidate(); // Session zerstören
+        foreach(auth()->user()->unreadNotifications as $n) {
+            $n->markAsRead();
+        }
 
         $vehicles = Vehicle::paginate(10);
-
-        //$v = Vehicle::find(199);
-        //dump($v);
-        // $v = Vehicle::findOrFail(199);
-        // dd($v);
-
-
-        // Cookie schreiben
-        //cookie()->queue('besucher_id', '1234', 5);
-
-        // Cookie lesen
-        //dd(request()->cookie('besucher_id2'));
-
-        // Cookie über Response schreiben
-        // return response(view('vehicleList')->withVehicles($vehicles))
-        //         ->withCookie('besucher_id2', '1234', 5);
-
-        // dump(request()->user());
-
-        // if(Auth::check()) {
-        //     dump('angemeldet');
-        //     dump(Auth::user());
-        // }
-        // else {
-        //     dump('nicht angemeldet');
-        // }
-
         return view('vehicleList')
-            //->withLink('<a href="#">Link</a>')
             ->withVehicles($vehicles);
-            //->withV($v);
             
     }
 
@@ -98,17 +54,11 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        //dd(request());
         Gate::authorize('isAdmin');
         
-        // if(Gate::allows('isAdmin')) {
             return view('vehicleCreate')
                 ->withVehicle(new Vehicle())
                 ->withCategories(\App\Category::all());
-        // }
-        // else {
-        //     return Gate::denies(403);
-        // }
     }
 
     /**
@@ -119,32 +69,44 @@ class VehicleController extends Controller
      */
     public function store(VehicleRequest $request)
     {
-        // Schlägt die Validierung fehl, leitet Laravel uns zum Ursprung zurück
-        // $request->validate([
-        //     'brand' => ['required', 'max:25'],
-        //     'type' => 'required|max:25',
-        //     'registration' => 'required|min:6|max:20',
-        //     'description' => 'required|min:2',
-        //     'img' => 'required|min:5',
-        // ]);
-
-        // save/create wird auf Model-Objekten ausgeführt
-        // store wird auf Illiminate\Http\File-Objekten ausgeführt
-
         $file = $request->file('img');
-        // Als Name wird ein Hash verwendet
         $path = $file->store('img', 'public'); // storage/app/public/img
-
         // $file = $request->file('img');
         // $fileName = $file->getClientOriginalName(); // Original_namen abfragen
         // // Originalname wird verwendet
         // $path = $file->storeAs('img', $fileName, 'public');
 
+        //dump($path);
+
         $data = $request->all();
         $data['img'] = $path;
 
+        $file = $request->file('img');
+        $smallPath = $file->storeAs('small', $path, 'public');
+        
+        // Kopie im Ordner small wird angepasst
+        $this->createImageVariant(public_path('storage/'.$smallPath), 200, 200);
+
+        // public_path() // Absolter pfad für public-dir
+        // storage_path() // Absolter pfad für storage-dir
+
         Vehicle::create($data);
+        //return redirect()->route('vehicles.index');
+
+        $data = $request->only(['redirectTo']);
+        
+        if(!empty($data['redirectTo'])) {
+            return redirect()->to($data['redirectTo']);
+        }
         return redirect()->route('vehicles.index');
+    }
+
+    private function createImageVariant($path, $w, $h) {
+        $image = Image::make($path)->resize($w, $h, function($c) {
+            $c->aspectRatio();
+            //$c->upsize();
+        });
+        $image->save($path);
     }
 
     /**
@@ -189,6 +151,18 @@ class VehicleController extends Controller
         $vehicle->fill($request->all());
         $vehicle->category()->associate($category);
         $vehicle->save();
+
+        auth()->user()->notify(new VehicleStatusChange($vehicle));
+        //Notification::send(auth()->user, new VehicleStatusChange());
+
+
+        // TODO: Speichern des Bilde wie in store implementieren
+
+        $data = $request->only(['redirectTo']);
+
+        if(!empty($data['redirectTo'])) {
+            return redirect()->to($data['redirectTo']);
+        }
         return redirect()->route('vehicles.index');
     }
 
